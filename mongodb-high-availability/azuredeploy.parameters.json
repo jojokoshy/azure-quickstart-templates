@@ -1,15 +1,15 @@
 {
-  "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
     "adminUsername": {
-      "value": "MongoAdmin"
+      "value": "GEN-UNIQUE"
     },
     "adminPassword": {
-      "value": ""
+      "value": "GEN-PASSWORD"
     },
-    "storageAccountName": {
-      "value": ""
+    "storageAccountNamePrefix": {
+      "value": "GEN-UNIQUE-8"
     },
     "storageAccountType": {
       "value": "Standard_LRS"
@@ -17,14 +17,11 @@
     "vmSeries": {
       "value": "D"
     },
-    "location": {
-      "value": "West US"
-    },
     "virtualNetworkName": {
-      "value": "mongodbVnet"
+      "value": "GEN-VNET-NAME"
     },
     "subnetName": {
-      "value": "mongodbSubnet"
+      "value": "GEN-VNET-SUBNET1-NAME"
     },
     "addressPrefix": {
       "value": "10.0.0.0/16"
@@ -45,13 +42,13 @@
       "value": "Ubuntu"
     },
     "mongodbVersion": {
-      "value": "3.0.2"
+      "value": "4.0.2"
     },
     "replicaSetName": {
       "value": "rs0"
     },
     "replicaSetKey": {
-      "value": ""
+      "value": "GEN-UNIQUE-8"
     }
   }
 }

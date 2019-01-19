@@ -1,10 +1,9 @@
 {
-  "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
-    "storageName": {
+    "newStorageAccount": {
       "type": "string",
-      "defaultValue": "pctst03stor",
       "metadata": {
         "description": "The name of the new storage account created to store the VMs disks"
       }
@@ -21,22 +20,8 @@
         "description": "The storage type created to store the VMs disks"
       }
     },
-    "location": {
+    "adminUsername": {
       "type": "string",
-      "allowedValues": [
-        "East US",
-        "West US",
-        "West Europe",
-        "East Asia",
-        "South East Asia"
-      ],
-      "metadata": {
-        "description": "The location for the vms and other artefacts to be created."
-      }
-    },
-    "adminUserName": {
-      "type": "string",
-      "defaultValue": "domadm",
       "metadata": {
         "description": "The admin user name for the VM created."
       }
@@ -67,16 +52,28 @@
     },
     "dscPullSrvName": {
       "type": "string",
-      "defaultValue": "pctst03pull",
       "metadata": {
         "description": "The name of the Windows vm."
       }
     },
     "dscPullIPDnsName": {
       "type": "string",
-      "defaultValue": "pctst03pubipull",
       "metadata": {
         "description": "The name of the public ip address"
+      }
+    },
+    "assetLocation": {
+      "type": "string",
+      "metadata": {
+        "description": "The location of resources such as templates and DSC modules that the script is dependent"
+      },
+      "defaultValue": "https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/dsc-pullserver-to-win-server/"
+    },
+    "location": {
+      "type": "string",
+      "defaultValue": "[resourceGroup().location]",
+      "metadata": {
+        "description": "Location for all resources."
       }
     }
   },
@@ -87,12 +84,11 @@
     "VirtualNetworkSubnet2Name": "Subnet-2",
     "VirtualNetworkSubnet2Prefix": "10.0.1.0/24",
     "dscPullSrvOSDiskName": "osdisk",
-    "dscPullSrvVnetID": "[resourceId('Microsoft.Network/virtualNetworks', 'dscVirtualNetwork')]",
-    "dscPullSrvSubnetRef": "[concat(variables('dscPullSrvVnetID'), '/subnets/', variables('VirtualNetworkSubnet1Name'))]",
+    "dscPullSrvSubnetRef": "[resourceId('Microsoft.Network/virtualNetworks/subnets', 'dscVirtualNetwork', variables('VirtualNetworkSubnet1Name'))]",
     "dscPullSrvStorageAccountContainerName": "vhds",
     "dscPullSrvNicName": "dscNetworkInterface",
     "dscPullIPName": "dscPublicIPAddress",
-    "deployDSCPullServerConfigurationFile": "https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/dsc-pullserver-to-win-server/ConfigurePullServer.ps1.zip",
+    "deployDSCPullServerConfigurationFile": "[concat(parameters('assetLocation'), 'ConfigurePullServer.ps1.zip')]",
     "deployDSCPullServerConfigurationFunction": "ConfigurePullServer.ps1\\ConfigurePullServer",
     "windowsOSVersion": "2012-R2-Datacenter",
     "imagePublisher": "MicrosoftWindowsServer",
@@ -100,7 +96,7 @@
   },
   "resources": [
     {
-      "name": "[parameters('storageName')]",
+      "name": "[parameters('newStorageAccount')]",
       "type": "Microsoft.Storage/storageAccounts",
       "location": "[parameters('location')]",
       "apiVersion": "2015-05-01-preview",
@@ -176,9 +172,9 @@
       "name": "[parameters('dscPullSrvName')]",
       "type": "Microsoft.Compute/virtualMachines",
       "location": "[parameters('location')]",
-      "apiVersion": "2015-05-01-preview",
+      "apiVersion": "2017-03-30", 
       "dependsOn": [
-        "[concat('Microsoft.Storage/storageAccounts/', parameters('storageName'))]",
+        "[concat('Microsoft.Storage/storageAccounts/', parameters('newStorageAccount'))]",
         "[concat('Microsoft.Network/networkInterfaces/', variables('dscPullSrvNicName'))]"
       ],
       "tags": {
@@ -189,7 +185,7 @@
           "vmSize": "[parameters('vmSize')]"
         },
         "osProfile": {
-          "computername": "[parameters('dscPullSrvName')]",
+          "computerName": "[parameters('dscPullSrvName')]",
           "adminUsername": "[parameters('adminUsername')]",
           "adminPassword": "[parameters('adminPassword')]"
         },
@@ -201,10 +197,7 @@
             "version": "latest"
           },
           "osDisk": {
-            "name": "dscPullSrvOSDisk",
-            "vhd": {
-              "uri": "[concat('http://', parameters('storageName'), '.blob.core.windows.net/', variables('dscPullSrvStorageAccountContainerName'), '/', variables('dscPullSrvOSDiskName'), '.vhd')]"
-            },
+            "name": "[concat(parameters('dscPullSrvName'),'_OSDisk')]", 
             "caching": "ReadWrite",
             "createOption": "FromImage"
           }
@@ -232,7 +225,8 @@
           "properties": {
             "publisher": "Microsoft.Powershell",
             "type": "DSC",
-            "typeHandlerVersion": "1.9",
+            "typeHandlerVersion": "2.19",
+            "autoUpgradeMinorVersion": true,
             "settings": {
               "modulesUrl": "[variables('deployDSCPullServerConfigurationFile')]",
               "configurationFunction": "[variables('deployDSCPullServerConfigurationFunction')]",

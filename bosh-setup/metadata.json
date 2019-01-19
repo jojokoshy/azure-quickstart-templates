@@ -1,7 +1,9 @@
 {
-  "itemDisplayName": "Bosh-init Setup",
-  "description": "This template helps you to setup cloud foundry development environment where you can use bosh-init to delpoy bosh.",
-  "summary": "Bosh-init Setup",
-  "githubUsername": "qingfuwang",
-  "dateUpdated": "2015-07-28"
+  "$schema": "https://aka.ms/azure-quickstart-templates-metadata-schema#",
+  "type": "QuickStart",
+  "itemDisplayName": "BOSH Setup",
+  "description": "This template helps you setup a development environment where you can deploy BOSH and Cloud Foundry.",
+  "summary": "This template helps you setup a development environment where you can deploy BOSH and Cloud Foundry.",
+  "githubUsername": "bingosummer",
+  "dateUpdated": "2018-11-15"
 }

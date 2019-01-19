@@ -1,18 +1,18 @@
 {
-  "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
     "newStorageAccountName": {
-      "value": "uniquestorageaccountname"
+      "value": "GEN-UNIQUE"
     },
     "adminUsername": {
       "value": "username"
     },
     "adminPassword": {
-      "value": "password!"
+      "value": "GEN-PASSWORD"
     },
     "dnsNameForPublicIP": {
-      "value": "vmdnsname"
+      "value": "GEN-UNIQUE"
     },
     "vmSize": {
       "value": "Standard_D2"

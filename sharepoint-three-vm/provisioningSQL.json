@@ -20,7 +20,7 @@
     "adminPassword": {
       "type": "securestring"
     },
-    "storageAccountName": {
+    "storageAccountNamePrefix": {
       "type": "string"
     },
     "sqlDataDisk": {
@@ -32,31 +32,19 @@
     "sqlNicName": {
       "type": "string"
     },
-    "sqlModulesURL": {
+    "sqlPrepareModulesURL": {
       "type": "string"
     },
-    "sqlConfigurationFunction": {
+    "sqlPreparationFunction": {
       "type": "string"
     },
-    "domainName": {
+    "DNSServerAddress": {
       "type": "string"
-    },
-    "sqlServerServiceAccountUserName": {
-      "type": "string"
-    },
-    "sharePointSetupUserAccountUserName": {
-      "type": "string"
-    },
-    "sqlServerServiceAccountPassword": {
-      "type": "securestring"
-    },
-    "sharePointSetupUserAccountPassword": {
-      "type": "securestring"
     }
   },
   "resources": [
     {
-      "apiVersion": "2015-06-15",
+      "apiVersion": "2017-03-30",
       "type": "Microsoft.Compute/virtualMachines",
       "name": "[parameters('sqlVMName')]",
       "location": "[parameters('location')]",
@@ -68,42 +56,33 @@
           "id": "[resourceId('Microsoft.Compute/availabilitySets', parameters('sqlAvailabilitySetName'))]"
         },
         "osProfile": {
-          "computername": "[parameters('sqlVMName')]",
+          "computerName": "[parameters('sqlVMName')]",
           "adminUsername": "[parameters('adminUsername')]",
           "adminPassword": "[parameters('adminPassword')]"
         },
-        "storageProfile": {
-          "imageReference": {
-            "publisher": "MicrosoftSQLServer",
-            "offer": "SQL2014-WS2012R2",
-            "sku": "Enterprise",
-            "version": "latest"
+    "storageProfile": {
+      "imageReference": {
+        "publisher": "MicrosoftSQLServer",
+        "offer": "SQL2016-WS2016",
+        "sku": "SQLDEV",
+        "version": "latest"
           },
           "osDisk": {
             "name": "osdisk",
-            "vhd": {
-              "uri": "[concat('http://',parameters('storageAccountName'),'.blob.core.windows.net/vhds/',parameters('sqlVMName'),'-osdisk.vhd')]"
-            },
             "caching": "ReadWrite",
             "createOption": "FromImage"
           },
           "dataDisks": [
             {
-              "vhd": {
-                "uri": "[concat('http://',parameters('storageAccountName'),'.blob.core.windows.net/vhds/', parameters('sqlDataDisk'), '-1.vhd')]"
-              },
-              "name": "[concat(parameters('sqlVMName'),'-data-disk1')]",
-              "createOption": "empty",
+              "name": "[concat(parameters('sqlVMName'),'_DataDisk1')]",
+              "createOption": "Empty",
               "caching": "None",
               "diskSizeGB": 1000,
               "lun": 0
             },
             {
-              "vhd": {
-                "uri": "[concat('http://',parameters('storageAccountName'),'.blob.core.windows.net/vhds/', parameters('sqlLogDisk'), '-1.vhd')]"
-              },
-              "name": "[concat(parameters('sqlVMName'),'-log-disk1')]",
-              "createOption": "empty",
+              "name": "[concat(parameters('sqlVMName'),'_LogDisk1')]",
+              "createOption": "Empty",
               "caching": "None",
               "diskSizeGB": 1000,
               "lun": 1
@@ -120,7 +99,7 @@
         "diagnosticsProfile": {
           "bootDiagnostics": {
             "enabled": "true",
-            "storageUri": "[concat('http://',parameters('storageAccountName'),'diag.blob.core.windows.net')]"
+            "storageUri": "[concat('http://',parameters('storageAccountNamePrefix'),'2.blob.core.windows.net')]"
           }
         }
       }
@@ -136,33 +115,16 @@
       "properties": {
         "publisher": "Microsoft.Powershell",
         "type": "DSC",
-        "typeHandlerVersion": "2.6",
+        "typeHandlerVersion": "2.20",
+        "autoUpgradeMinorVersion": true,
         "settings": {
-          "ModulesUrl": "[parameters('sqlModulesURL')]",
-          "ConfigurationFunction": "[parameters('sqlConfigurationFunction')]",
+          "ModulesUrl": "[parameters('sqlPrepareModulesURL')]",
+          "ConfigurationFunction": "[parameters('sqlPreparationFunction')]",
           "Properties": {
-            "DomainName": "[parameters('domainName')]",
-            "AdminCreds": {
-              "UserName": "[parameters('adminUserName')]",
-              "Password": "PrivateSettingsRef:AdminPassword"
-            },
-            "SqlServerServiceAccountcreds": {
-              "UserName": "[parameters('sqlServerServiceAccountUserName')]",
-              "Password": "PrivateSettingsRef:SqlServerServiceAccountPassword"
-            },
-            "SharePointSetupUserAccountcreds": {
-              "UserName": "[parameters('sharePointSetupUserAccountUserName')]",
-              "Password": "PrivateSettingsRef:SharePointSetupUserAccountPassword"
-            }
+                "DNSServer": "[parameters('DNSServerAddress')]"
           }
         },
-        "protectedSettings": {
-          "Items": {
-            "AdminPassword": "[parameters('adminPassword')]",
-            "SqlServerServiceAccountPassword": "[parameters('sqlServerServiceAccountPassword')]",
-            "SharePointSetupUserAccountPassword": "[parameters('sharePointSetupUserAccountPassword')]"
-          }
-        }
+        "protectedSettings": null
       }
     }
   ],

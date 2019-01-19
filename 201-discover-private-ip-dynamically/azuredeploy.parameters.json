@@ -1,12 +1,9 @@
 {
-  "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
     "newStorageAccountName": {
-      "value": "storageAccount"
-    },
-    "location": {
-      "value": "West US"
+      "value": "GEN-UNIQUE"
     },
     "vmName": {
       "value": "myVM"
@@ -14,14 +11,14 @@
     "vmSize": {
       "value": "Standard_D1"
     },
-    "adminUserName": {
+    "adminUsername": {
       "value": "admin123"
     },
     "adminPassword": {
-      "value": "Admin123_!"
+      "value": "GEN-PASSWORD"
     },
     "customScriptFilePath": {
-      "value": "https://raw.githubusercontent.com/Azure/azure-quickstart-templates/tree/master/master/201-discover-private-ip-dynamically/privateip.sh"
+      "value": "https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/201-discover-private-ip-dynamically/privateip.sh"
     },
     "customScriptCommandToExecute": {
       "value": "sh privateip.sh "

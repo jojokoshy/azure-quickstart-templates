@@ -1,24 +1,18 @@
 {
-  "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
-  "contentVersion": "1.0.0.0",
-  "parameters": {
-    "newStorageAccountName": {
-      "value": "uniqueAccount"
-    },
-    "location": {
-      "value": "West US"
-    },
-    "adminUsername": {
-      "value": "test"
-    },
-    "adminPassword": {
-      "value": "somePass"
-    },
-    "adVMSize": {
-      "value": "Standard_D2"
-    },
-    "dnsPrefix": {
-      "value": "testName"
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "adminUsername": {
+            "value": "GEN-UNIQUE"
+        },
+        "adminPassword": {
+            "value": "GEN-PASSWORD"
+        },
+        "dnsPrefix": {
+            "value": "GEN-UNIQUE"
+        },
+        "domainName": {
+            "value": "mydomain.local"
+        }
     }
-  }
 }

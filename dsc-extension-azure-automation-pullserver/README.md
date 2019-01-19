@@ -3,11 +3,28 @@
 <a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FAzure%2Fazure-quickstart-templates%2Fmaster%2Fdsc-extension-azure-automation-pullserver%2Fazuredeploy.json" target="_blank">
     <img src="http://azuredeploy.net/deploybutton.png"/>
 </a>
+<a href="http://armviz.io/#/?load=https%3A%2F%2Fraw.githubusercontent.com%2FAzure%2Fazure-quickstart-templates%2Fmaster%2Fdsc-extension-azure-automation-pullserver%2Fazuredeploy.json" target="_blank">
+    <img src="http://armviz.io/visualizebutton.png"/>
+</a>
 
-This template configures an existing Virtual Machine Local Configuration Manager (LCM) via the DSC extension, registering it to an existing Azure Automation Account DSC Pull Server.
+## UPDATE: THIS IS NO LONGER REQUIRED
 
-<b>NOTE:</b> The DSC configuration module requires three specific Azure Automation DSC parameters: Registration Key, Registration URL, and Node Configuration Name. These prerequisites are available only after successful creation and configuration of an Azure Automation Account for Azure Automation DSC.
+This example was originally published
+to assist with onboarding new virtual machines in Azure
+to the Azure Automation DSC service.
+Based on customer feedback,
+as of
+[DSC Extension version 2.72](https://blogs.msdn.microsoft.com/powershell/2014/11/20/release-history-for-the-azure-dsc-extension/),
+a script to onboard machines is included in DSC Extension.
 
-For more information on Azure Automation DSC, please see the following: <a href="http://aka.ms/DSCLearnMore" target="_blank">Azure Automation DSC Overview</a>
+To leverage the
+[Default Configuration Script](https://docs.microsoft.com/en-us/azure/virtual-machines/windows/extensions-dsc-overview),
+you only need to
+[leave the Settings.Configuration values null](https://docs.microsoft.com/en-us/azure/virtual-machines/windows/extensions-dsc-template#details)
+and provide values for
+[RegistrationKey, RegistrationID, and NodeConfigurationName](https://docs.microsoft.com/en-us/azure/virtual-machines/windows/extensions-dsc-template#default-configuration-script).
 
-<b>DISCLAIMER:</b> This template does not create a new VM, it only includes what is necessary to create/update a DSC VM Extension for an existing VM. The contents of this template can be leveraged as part of a VM creation template, either by nesting, or copying/pasting the relevant template metadata.
+## More Information
+
+For more information on Azure Automation DSC (including more examples and usage), please see the
+[Azure Automation DSC Overview](http://aka.ms/DSCLearnMore).

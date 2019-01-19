@@ -20,7 +20,7 @@
     "adminPassword": {
       "type": "securestring"
     },
-    "storageAccountName": {
+    "storageAccountNamePrefix": {
       "type": "string"
     },
     "adDataDisk": {
@@ -41,7 +41,7 @@
   },
   "resources": [
     {
-      "apiVersion": "2015-06-15",
+      "apiVersion": "2017-03-30",
       "type": "Microsoft.Compute/virtualMachines",
       "name": "[parameters('adVMName')]",
       "location": "[parameters('location')]",
@@ -53,7 +53,7 @@
           "id": "[resourceId('Microsoft.Compute/availabilitySets', parameters('adAvailabilitySetName'))]"
         },
         "osProfile": {
-          "computername": "[parameters('adVMName')]",
+          "computerName": "[parameters('adVMName')]",
           "adminUsername": "[parameters('adminUsername')]",
           "adminPassword": "[parameters('adminPassword')]"
         },
@@ -65,21 +65,15 @@
             "version": "latest"
           },
           "osDisk": {
-            "name": "osdisk",
-            "vhd": {
-              "uri": "[concat('http://',parameters('storageAccountName'),'.blob.core.windows.net/vhds/',parameters('adVMName'),'-osdisk.vhd')]"
-            },
+            "name":"[concat(parameters('adVMName'),'_OSDisk')]",
             "caching": "ReadWrite",
             "createOption": "FromImage"
           },
           "dataDisks": [
             {
-              "vhd": {
-                "uri": "[concat('http://',parameters('storageAccountName'),'.blob.core.windows.net/vhds/', parameters('adDataDisk'),'-1.vhd')]"
-              },
-              "name": "[concat(parameters('adVMName'),'-data-disk1')]",
+              "name": "[concat(parameters('adVMName'),'_DataDisk1')]",
               "caching": "None",
-              "createOption": "empty",
+              "createOption": "Empty",
               "diskSizeGB": 1000,
               "lun": 0
             }
@@ -95,7 +89,7 @@
         "diagnosticsProfile": {
           "bootDiagnostics": {
             "enabled": "true",
-            "storageUri": "[concat('http://',parameters('storageAccountName'),'diag.blob.core.windows.net')]"
+            "storageUri": "[concat('http://',parameters('storageAccountNamePrefix'),'2.blob.core.windows.net')]"
           }
         }
       },
@@ -111,14 +105,16 @@
           "properties": {
             "publisher": "Microsoft.Powershell",
             "type": "DSC",
-            "typeHandlerVersion": "2.6",
+            "typeHandlerVersion": "2.20",
+            "autoUpgradeMinorVersion": true,
             "settings": {
               "ModulesUrl": "[parameters('adModulesURL')]",
+              "wmfVersion": "4.0",
               "ConfigurationFunction": "[parameters('adConfigurationFunction')]",
               "Properties": {
                 "DomainName": "[parameters('domainName')]",
                 "AdminCreds": {
-                  "UserName": "[parameters('adminUserName')]",
+                  "UserName": "[parameters('adminUsername')]",
                   "Password": "PrivateSettingsRef:AdminPassword"
                 }
               }
