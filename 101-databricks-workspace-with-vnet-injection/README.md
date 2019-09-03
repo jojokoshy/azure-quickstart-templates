@@ -7,5 +7,7 @@
     <img src="http://armviz.io/visualizebutton.png"/>
 </a>
 
+https://raw.githubusercontent.com/jojokoshy/azure-quickstart-templates/master/101-databricks-workspace-with-vnet-injection/azuredeploy.json
+
 This template allows you to create a Azure Databricks workspace with a custom virtual network.
 For more information, see the <a href="https://docs.microsoft.com/en-us/azure/azure-databricks/">Azure Databricks Documentation</a>.
