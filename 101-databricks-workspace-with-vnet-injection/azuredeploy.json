@@ -62,6 +62,7 @@
     "comments": "The resource group specified will be locked after deployment.",
     "properties": {
       "ManagedResourceGroupId": "[variables('managedResourceGroupId')]",
+      
       "parameters": {
         "customVirtualNetworkId": {
           "value": "[parameters('customVirtualNetworkId')]"
@@ -71,7 +72,10 @@
         },
         "customPrivateSubnetName": {
           "value": "[parameters('customPrivateSubnetName')]"
-        }
+        },
+        "storageAccountSkuName": {
+            "value": "Standard_LRS"
+          }
       }
     },
     "type": "Microsoft.Databricks/workspaces"
