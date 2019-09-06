@@ -74,6 +74,12 @@
         "description": "Name of the subnet in the virtual network you want to use"
       }
     },
+    "workspaceName": {
+      "type": "string",
+      "metadata": {
+        "description": "Name of the Log Analytics Workspace that you want to send logs to."
+      }
+    },
     "_artifactsLocation": {
       "type": "string",
       "metadata": {
