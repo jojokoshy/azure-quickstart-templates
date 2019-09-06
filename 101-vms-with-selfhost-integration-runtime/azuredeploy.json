@@ -80,6 +80,12 @@
         "description": "Name of the Log Analytics Workspace that you want to send logs to."
       }
     },
+      "workspaceRG": {
+      "type": "string",
+      "metadata": {
+        "description": "Name of the Resource Group for Log Analytics Workspace that you want to send logs to."
+      }
+    },
     "_artifactsLocation": {
       "type": "string",
       "metadata": {
@@ -211,7 +217,11 @@
           },
           "workspaceName": {
             "value": "[parameters('workspaceName')]"
+          },
+           "workspaceRG": {
+            "value": "[parameters('workspaceRG')]"
           }
+          
         }
       }
     },
