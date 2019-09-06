@@ -22,7 +22,10 @@
     },
     "storageAccountName": {
       "type": "string"
-    }
+    },
+    "workspaceName": {
+      "type": "string"
+    } 
   },
   "variables": {
     "nicName": "[concat(parameters('virtualMachineName'), 'Nic')]",
