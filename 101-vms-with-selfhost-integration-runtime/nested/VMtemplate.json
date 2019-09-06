@@ -110,6 +110,32 @@
             "storageUri": "[concat('https://', parameters('storageAccountName'), '.blob.core.windows.net/')]"
           }
         }
+        ,
+        "resources": [
+        {
+          "type": "extensions",
+          "name": "Microsoft.EnterpriseCloud.Monitoring",
+          "apiVersion": "[variables('apiVersion')]",
+          "location": "[parameters('location')]",
+          "dependsOn": [
+            "[concat('Microsoft.Compute/virtualMachines/', variables('vmName'))]"
+          ],
+          "properties": {
+            "publisher": "Microsoft.EnterpriseCloud.Monitoring",
+            "type": "MicrosoftMonitoringAgent",
+            "typeHandlerVersion": "1.0",
+            "autoUpgradeMinorVersion": true,
+            "settings": {
+              "workspaceId": "[reference(resourceId('Microsoft.OperationalInsights/workspaces/', parameters('workspaceName')), '2015-03-20').customerId]"
+            },
+            "protectedSettings": {
+              "workspaceKey": "[listKeys(resourceId('Microsoft.OperationalInsights/workspaces/', parameters('workspaceName')), '2015-03-20').primarySharedKey]"
+            }
+          }
+        }
+      ]
+        
+        
       }
     }
   ]
