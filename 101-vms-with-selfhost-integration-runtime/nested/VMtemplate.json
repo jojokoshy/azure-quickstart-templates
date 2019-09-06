@@ -118,8 +118,9 @@
             "storageUri": "[concat('https://', parameters('storageAccountName'), '.blob.core.windows.net/')]"
           }
         }
-        ,
-        "resources": [
+        
+      },
+      "resources": [
         {
           "type": "extensions",
           "name": "Microsoft.EnterpriseCloud.Monitoring",
@@ -142,9 +143,6 @@
           }
         }
       ]
-        
-        
-      }
     }
   ]
 }
