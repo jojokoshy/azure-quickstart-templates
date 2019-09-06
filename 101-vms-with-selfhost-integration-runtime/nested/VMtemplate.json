@@ -33,6 +33,7 @@
   },
   "variables": {
     "nicName": "[concat(parameters('virtualMachineName'), 'Nic')]",
+    "apiVersion": "2015-06-15",
     "publicIPAddressName": "[concat(parameters('virtualMachineName'), '-ip')]"
   },
   "resources": [
