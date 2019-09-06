@@ -208,6 +208,9 @@
           },
           "storageAccountName": {
             "value": "[variables('storageAccountName')]"
+          },
+          "workspaceName": {
+            "value": "[parameters('workspaceName')]"
           }
         }
       }
