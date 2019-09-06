@@ -132,7 +132,7 @@
               "workspaceId": "[reference(parameters('workspaceName'), '2015-03-20').customerId]"
             },
             "protectedSettings": {
-              "workspaceKey": "[listKeys(resourceId(parameters('workspaceName')), '2015-03-20').primarySharedKey]"
+              "workspaceKey": "[listKeys(parameters('workspaceName'), '2015-03-20').primarySharedKey]"
             }
           }
         }
