@@ -25,7 +25,11 @@
     },
     "workspaceName": {
       "type": "string"
+    } ,
+    "workspaceRG": {
+      "type": "string"
     } 
+    
   },
   "variables": {
     "nicName": "[concat(parameters('virtualMachineName'), 'Nic')]",
@@ -129,10 +133,10 @@
             "typeHandlerVersion": "1.0",
             "autoUpgradeMinorVersion": true,
             "settings": {
-              "workspaceId": "[reference(parameters('workspaceName'), '2015-03-20').customerId]"
+              "workspaceId": "[reference(resourceId(parameters('workspaceRG'),'Microsoft.OperationalInsights/workspaces/', parameters('workspaceName')), '2015-03-20').customerId]"
             },
             "protectedSettings": {
-              "workspaceKey": "[listKeys(parameters('workspaceName'), '2015-03-20').primarySharedKey]"
+              "workspaceKey": "[listKeys(resourceId(parameters('workspaceRG'),'Microsoft.OperationalInsights/workspaces/', parameters('workspaceName')), '2015-03-20').primarySharedKey]"
             }
           }
         }
