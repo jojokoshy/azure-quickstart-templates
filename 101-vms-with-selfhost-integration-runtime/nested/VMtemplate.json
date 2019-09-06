@@ -125,7 +125,7 @@
           "apiVersion": "[variables('apiVersion')]",
           "location": "[parameters('existingVnetLocation')]",
           "dependsOn": [
-            "[concat('Microsoft.Compute/virtualMachines/', variables('vmName'))]"
+            "[concat('Microsoft.Compute/virtualMachines/', variables('virtualMachineName'))]"
           ],
           "properties": {
             "publisher": "Microsoft.EnterpriseCloud.Monitoring",
